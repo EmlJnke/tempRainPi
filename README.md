@@ -1,3 +1,10 @@
+# Fork of github.com/untergasser/tempRainPi
+
+This is a Fork of the original tempRainPi to further develop the great work of Andreas Untergasser
+to fit into my purposes.
+
+Almost all Code is written by him so credits go to github.com/untergasser!
+
 # TempRainPi
 
 This is a proof of principle project to decode wireless weather sensors with simple modules and 
@@ -54,7 +61,7 @@ Now I am still left with SDR for the TFA KLIMALOGG...pro sensors.
 
 ## License
 
-Copyright 2018 Andreas Untergasser
+Copyright 2019 Andreas Untergasser (+Emil Jahnke)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -68,4 +75,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
