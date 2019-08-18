@@ -2,3 +2,5 @@
 *.o
 rscan
 transmit
+
+.vscode/
