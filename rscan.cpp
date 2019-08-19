@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 static volatile int keepRunning = 1;
 
@@ -21,6 +24,9 @@ int rainl = 0;
 int rainb = 0;
 
 int newbit(char bit);
+
+//Create file stream myfile
+ofstream myfile;
 
 /*
  * Signal handler to catch Ctrl-C to terminate the program safely.
@@ -127,6 +133,11 @@ int newbit(char bit)
     temp = 0;
     rainl = 0;
     rainb = 0;
+    //Print raw signal to file
+    myfile.open("data.txt");
+    myfile << sign;
+    myfile.close();
+
     return 0;
   }
   sipo++;
