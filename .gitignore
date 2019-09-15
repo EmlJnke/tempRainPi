@@ -5,3 +5,5 @@ transmit
 
 .vscode/
 data.txt
+rawdata.txt
+rscanAlt.cpp

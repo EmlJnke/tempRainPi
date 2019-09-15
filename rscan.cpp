@@ -10,12 +10,13 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 using namespace std;
 
 static volatile int keepRunning = 1;
 
 // String to recognize the sensor
-char idst[] = "1111111001100000101\0";
+char idst[] = "001100000101\0";
 
 char sign[200];
 char sipo = 0;
@@ -80,7 +81,7 @@ PI_THREAD(decoderThread)
     }
     px = x;
 
-    delayMicroseconds(100);
+    delayMicroseconds(180);
   }
 }
 
@@ -97,7 +98,7 @@ int newbit(char bit)
     return 0;
   }
   sign[sipo] = bit;
-  if (sipo > 19 && sipo < 31)
+  if (sipo > 13 && sipo < 24)
   {
     temp *= 2;
     if (bit == '1')
@@ -105,7 +106,7 @@ int newbit(char bit)
       temp += 1;
     }
   }
-  if (sipo > 30 && sipo < 39)
+  if (sipo > 23 && sipo < 32)
   {
     rainl *= 2;
     if (bit == '1')
@@ -113,7 +114,7 @@ int newbit(char bit)
       rainl += 1;
     }
   }
-  if (sipo > 38 && sipo < 47)
+  if (sipo > 31 && sipo < 40)
   {
     rainb *= 2;
     if (bit == '1')
@@ -121,7 +122,7 @@ int newbit(char bit)
       rainb += 1;
     }
   }
-  if (sipo > 93)
+  if (sipo > 86)
   {
     // Print the signal
     printf("Signal found:\n%s\n  .   .   .   i   i ?ttttttttttrrrrrrrrRRRRRRRR   .   .   m   m   m   m   d   d   d   d   d   d\n", sign);
@@ -134,8 +135,10 @@ int newbit(char bit)
     rainl = 0;
     rainb = 0;
     //Print raw signal to file
-    myfile.open("data.txt");
+    myfile.open("rawdata.txt");
     myfile << sign;
+    myfile << ";";
+    myfile << time(0);
     myfile.close();
 
     return 0;
