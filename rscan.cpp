@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <string.h>
 using namespace std;
 
 static volatile int keepRunning = 1;
@@ -23,11 +24,15 @@ char sipo = 0;
 int temp = 0;
 int rainl = 0;
 int rainb = 0;
+int logging = 0;
+float temp_in = 0;
+string temp_in_file = "";
 
 int newbit(char bit);
 
 //Create file stream myfile
 ofstream myfile;
+ifstream tempfile;
 
 /*
  * Signal handler to catch Ctrl-C to terminate the program safely.
@@ -81,7 +86,7 @@ PI_THREAD(decoderThread)
     }
     px = x;
 
-    delayMicroseconds(180);
+    delayMicroseconds(200);
   }
 }
 
@@ -125,20 +130,40 @@ int newbit(char bit)
   if (sipo > 86)
   {
     // Print the signal
-    printf("Signal found:\n%s\n  .   .   .   i   i ?ttttttttttrrrrrrrrRRRRRRRR   .   .   m   m   m   m   d   d   d   d   d   d\n", sign);
-    float rtemp = (temp - 400) / 10.0;
-    printf("Temp: %.1f°C\n", rtemp);
-    float rrain = (rainb * 256 + rainl) * 0.3;
-    printf("Rain: %.1f mm\n", rrain);
+    if (logging == 1)
+    {
+      printf("Signal found:\n%s\n  .   .   .   i   i ?ttttttttttrrrrrrrrRRRRRRRR   .   .   m   m   m   m   d   d   d   d   d   d\n", sign);
+      float rtemp = (temp - 400) / 10.0;
+      printf("Temp: %.1f°C\n", rtemp);
+      float rrain = (rainb * 256 + rainl) * 0.3;
+      printf("Rain: %.1f mm\n", rrain);
+    }
     sipo = 0;
     temp = 0;
     rainl = 0;
     rainb = 0;
+    //Get temp from w1 device
+    try
+    {
+      tempfile.open("/sys/bus/w1/devices/28-00000a29b03b/w1_slave");
+      if (tempfile.is_open())
+      {
+        getline(tempfile, temp_in_file);
+        getline(tempfile, temp_in_file);
+        tempfile.close();
+      }
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+    }
     //Print raw signal to file
     myfile.open("rawdata.txt");
     myfile << sign;
     myfile << ";";
     myfile << time(0);
+    myfile << ";";
+    myfile << temp_in_file.substr(29);
     myfile.close();
 
     return 0;
@@ -167,8 +192,11 @@ int main()
   {
     piLock(1);
     piUnlock(1);
-    delay(100);
+    delay(200);
   }
 
-  printf("clean up and exit\n");
+  if (logging == 1)
+  {
+    printf("clean up and exit\n");
+  }
 }
