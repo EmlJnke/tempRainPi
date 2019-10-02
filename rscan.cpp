@@ -158,7 +158,7 @@ int newbit(char bit)
       std::cerr << e.what() << '\n';
     }
     //Print raw signal to file
-    myfile.open("rawdata.txt");
+    myfile.open("/home/pi/tempRainPi/rawdata.txt");
     myfile << sign;
     myfile << ";";
     myfile << time(0);
