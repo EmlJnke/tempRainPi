@@ -22,8 +22,8 @@ def send_data():
             "fields": {
                 "out": float(data[1]),
                 "in": float(data[2]),
-                "rain": (int(data[3]) - last_rain),
-                "totalRain": int(data[3])
+                "rain": (float(data[3]) - last_rain),
+                "totalRain": float(data[3])
             }
         }
     ]
