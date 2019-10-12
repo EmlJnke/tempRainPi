@@ -12,9 +12,9 @@ In principle, it could work for any frequency if decoders are available and the 
 
 ## Prerequisites
 
-  - [Raspberry Pi](https://www.raspberrypi.org/)
-  - [Generic 433Mhz reciver](https://github.com/milaq/rpi-rf) or (not used here) [RX868 receiver for 868.35Mhz](http://www.elv.de/output/controller.aspx?cid=74&detail=10&detail2=42432)  
-  - [WiringPi library](http://wiringpi.com/)  
+- [Raspberry Pi](https://www.raspberrypi.org/)
+- [Generic 433Mhz reciver](https://github.com/milaq/rpi-rf) or (not used here) [RX868 receiver for 868.35Mhz](http://www.elv.de/output/controller.aspx?cid=74&detail=10&detail2=42432)
+- [WiringPi library](http://wiringpi.com/)
 
 The transmitter can be used to send an identical signal, which can be recorded with an SDR:
 
