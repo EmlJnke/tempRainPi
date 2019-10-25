@@ -4,7 +4,7 @@ This is a Fork of the original [tempRainPi](https://github.com/untergasser/tempR
 
 Almost all C++ Code is written by him so credits go to [Untergasser](https://github.com/untergasser)!
 
-# TempRainPi
+## TempRainPi
 
 This is a proof of concept project to decode wireless weather sensors with simple modules running on a Raspberry Pi. Currently, it only supports the Alecto WS 1200. As the receiver is responsible for decoding the frequency, it should work with 868Mhz as well as 433Mhz depending on the device used. The Raspberry Pi does  
 not handle any high frequency decoding and just reads the signal on one pin 10000 times per second.  
