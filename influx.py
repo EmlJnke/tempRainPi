@@ -36,3 +36,5 @@ if __name__ == "__main__":
         send_data()
     except Exception as ex:
         print("error\n", ex)
+        errorfile = open("/home/pi/tempRainPi/err.txt", "a")
+        errorfile.write(str(ex) + "\n")
