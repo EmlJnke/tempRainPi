@@ -1,20 +1,36 @@
 from datetime import datetime
 from time import sleep
 from os import remove
+import fcntl
 
 logging = 1
 
 
 def main():
     rawData = 0
+    unlock = 0
     try:
         f = open("/home/pi/tempRainPi/rawdata.txt", "r")
+        while unlock == 0:
+            try:
+                fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                unlock = 1
+            except:
+                sleep(1)
         rawData = f.read()
+        fcntl.flock(f, fcntl.LOCK_UN)
+        f.close()
     except:
         sleep(1)
 
     if rawData and len(str(rawData)) > 98:
         wf = open("/home/pi/tempRainPi/data.txt", "w")
+        while unlock == 0:
+            try:
+                fcntl.flock(wf, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                unlock = 1
+            except:
+                sleep(1)
         #data = "11111110011000001010010010000110101011000000011111111110011010101101110011100101110001100101111"
         data = rawData[0:88]
         time = int(rawData[89:99])
@@ -55,6 +71,8 @@ def main():
                 print("Temperatur IN: " + str(temp_in) + " °C\n")
             wf.write(str(time) + "000000000" + ";" + str(temp) +
                      ";" + str(temp_in) + ";" + str(rain))
+            fcntl.flock(wf, fcntl.LOCK_UN)
+            wf.close()
         remove("/home/pi/tempRainPi/rawdata.txt")
         rawData = 0
     else:

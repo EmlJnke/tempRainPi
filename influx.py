@@ -1,14 +1,26 @@
 from influxdb import InfluxDBClient
 from time import sleep
+import fcntl
 
 client = InfluxDBClient(host='raspi3-emil.local',
                         port=8086, database='tempRainPi')
 
+rawdata = ""
+json_body = []
+
 
 def send_data():
+    unlock = 0
     file = open("/home/pi/tempRainPi/data.txt", "r")
-
+    while unlock == 0:
+        try:
+            fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            unlock = 1
+        except:
+            sleep(1)
     rawdata = file.read()
+    fcntl.flock(file, fcntl.LOCK_UN)
+    file.close()
     data = rawdata.split(";")
 
     last_rain = client.query(
@@ -37,4 +49,4 @@ if __name__ == "__main__":
     except Exception as ex:
         print("error\n", ex)
         errorfile = open("/home/pi/tempRainPi/err.txt", "a")
-        errorfile.write(str(ex) + "\n")
+        errorfile.write(str(ex) + str(rawdata) + str(json_body) + "\n")
