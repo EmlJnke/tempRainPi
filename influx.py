@@ -5,9 +5,6 @@ import fcntl
 client = InfluxDBClient(host='raspi3-emil.local',
                         port=8086, database='tempRainPi')
 
-rawdata = ""
-json_body = []
-
 
 def send_data():
     unlock = 0
@@ -49,4 +46,4 @@ if __name__ == "__main__":
     except Exception as ex:
         print("error\n", ex)
         errorfile = open("/home/pi/tempRainPi/err.txt", "a")
-        errorfile.write(str(ex) + str(rawdata) + str(json_body) + "\n")
+        errorfile.write(str(ex) + "\n")
