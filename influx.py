@@ -1,5 +1,5 @@
 from influxdb import InfluxDBClient
-from time import sleep
+from time import *
 import fcntl
 
 client = InfluxDBClient(host='raspi3-emil.local',
@@ -22,6 +22,11 @@ def send_data():
 
     last_rain = client.query(
         'select last("totalRain") from "weather"').raw['series'][0]['values'][0][1]
+
+    if (float(data[3]) - last_rain) < 0 or (float(data[3]) - last_rain) > 20:
+        raise Exception(
+            f'The rain difference is {(float(data[3]) - last_rain)} and thereby a wrong value.')
+        return
 
     json_body = [
         {
@@ -46,4 +51,6 @@ if __name__ == "__main__":
     except Exception as ex:
         print("error\n", ex)
         errorfile = open("/home/pi/tempRainPi/err.txt", "a")
-        errorfile.write(str(ex) + "\n")
+        errorfile.write(str(ex) + str(time()) + "\n")
+        sleep(150)
+        send_data()
