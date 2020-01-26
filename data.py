@@ -3,7 +3,7 @@ from time import sleep
 from os import remove
 import fcntl
 
-logging = 1
+logging = 0
 
 
 def main():
