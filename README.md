@@ -38,7 +38,7 @@ After all that I still depend on code from [tfrec (SDR for TFA KLIMALOGG Pro sen
 
 ## License
 
-Copyright 2019 Andreas Untergasser (+Emil Jahnke)
+Copyright 2020 Andreas Untergasser + Emil Jahnke
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
