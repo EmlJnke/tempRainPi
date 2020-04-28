@@ -37,7 +37,9 @@ def send_data():
                 "out": float(data[1]),
                 "in": float(data[2]),
                 "rain": (float(data[3]) - last_rain),
-                "totalRain": float(data[3])
+                "totalRain": float(data[3]),
+                "pressure": float(data[4]),
+                "humidityIn": float(data[5])
             }
         }
     ]

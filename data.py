@@ -2,8 +2,16 @@ from datetime import datetime
 from time import sleep
 from os import remove
 import fcntl
+import smbus2
+import bme280
 
 logging = 0
+
+port = 1
+address = 0x76
+bus = smbus2.SMBus(port)
+
+calibration_params = bme280.load_calibration_params(bus, address)
 
 
 def main():
@@ -60,6 +68,11 @@ def main():
         temp = round((((dd[1] & 0x7) << 8 | dd[2]) - 400) * 0.1, 1)
         rain = round((dd[4] << 8 | dd[3]) * 0.3, 1)
 
+        data = bme280.sample(bus, address, calibration_params, 5)
+
+        pressure = round((data.pressure + 4), 1)
+        humidity = round(data.humidity, 1)
+
         if (check - int("0b" + str(d[7]), 2) & 255) and logging == 1:
             print("checksum err: IS '" + str(check -
                                              int("0b" + str(d[7]), 2) & 255) + "', SHOULD BE '0' - " + str(datetime.fromtimestamp(time)))
@@ -68,9 +81,11 @@ def main():
                 print("Zeit: " + str(datetime.fromtimestamp(time)))
                 print("Niederschlag: " + str(rain) + " mm")
                 print("Temperatur OUT: " + str(temp) + " °C")
-                print("Temperatur IN: " + str(temp_in) + " °C\n")
+                print("Temperatur IN: " + str(temp_in) + " °C")
+                print("Luftdruck: " + str(pressure) + " hPa")
+                print("Luftfeuchtigkeit IN: " + str(humidity) + " %\n")
             wf.write(str(time) + "000000000" + ";" + str(temp) +
-                     ";" + str(temp_in) + ";" + str(rain))
+                     ";" + str(temp_in) + ";" + str(rain) + ";" + str(pressure) + ";" + str(humidity))
             fcntl.flock(wf, fcntl.LOCK_UN)
             wf.close()
         remove("/home/pi/tempRainPi/rawdata.txt")
