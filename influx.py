@@ -23,7 +23,7 @@ def send_data():
     last_rain = client.query(
         'select last("totalRain") from "weather"').raw['series'][0]['values'][0][1]
 
-    if (float(data[3]) - last_rain) < 0 or (float(data[3]) - last_rain) > 20:
+    if (float(data[3]) - last_rain) < 0 or (float(data[3]) - last_rain) > 30:
         raise Exception(
             f'The rain difference is {(float(data[3]) - last_rain)} and thereby a wrong value.')
         return
