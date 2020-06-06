@@ -17,7 +17,8 @@ using namespace std;
 static volatile int keepRunning = 1;
 
 // String to recognize the sensor
-char idst[] = "001100000101\0";
+//char idst[] = "001100000101\0";
+char idst[] = "001100101110\0";
 
 char sign[200];
 char sipo = 0;

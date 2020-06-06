@@ -66,7 +66,7 @@ def main():
                 index += 1
 
         temp = round((((dd[1] & 0x7) << 8 | dd[2]) - 400) * 0.1, 1)
-        rain = round((dd[4] << 8 | dd[3]) * 0.3, 1)
+        rain = round((dd[4] << 8 | dd[3]) * 0.3, 1) + 984
 
         data = bme280.sample(bus, address, calibration_params, 5)
 
